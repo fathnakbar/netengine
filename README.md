@@ -1,2 +1,2 @@
 # netengine
-Backend as a Service with built from .NET
+Backend as a Service with from .NET

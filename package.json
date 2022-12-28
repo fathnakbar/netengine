@@ -1,0 +1,25 @@
+{
+  "name": "datagram",
+  "scripts": {
+    "dev": "solid-start dev",
+    "build": "solid-start build",
+    "start": "solid-start start"
+  },
+  "type": "module",
+  "devDependencies": {
+    "typescript": "^4.8.4",
+    "vite": "^3.1.8"
+  },
+  "dependencies": {
+    "@vitest/ui": "^0.26.2",
+    "express": "^4.18.2",
+    "prisma": "^4.5.0",
+    "sequelize": "^6.28.0",
+    "sqlite3": "^5.1.4",
+    "undici": "^5.11.0",
+    "vitest": "^0.26.2"
+  },
+  "engines": {
+    "node": ">=16"
+  }
+}

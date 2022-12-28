@@ -1,0 +1,16 @@
+{
+    "transaction": {
+        "amount": "integer",
+        "status": "boolean",
+        "description": "text"
+    },
+
+    "wallet": {
+
+    },
+
+    "user": {
+        "username": "string",
+        "password": "string"
+    }
+}

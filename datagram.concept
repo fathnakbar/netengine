@@ -1,0 +1,28 @@
+SQL
+
+Case 1
+session.status.includes('users') && row.status == 'public': !column1 (read)
+SELECT column2, column3, column4 FROM transactions where status == "public";
+
+Case 2
+session.status.includes('users') && wallet(row.wallet_id).user_id == session.user_id: (read, update, delete)
+`
+SELECT column1, column2, wallet_id FROM transactions JOIN wallet ON transactions.wallet_id = wallet.id WHERE wallet.user_id == ${session.user_id}
+`
+Case 3
+Where case 1 and case 2 were place in one rule set
+
+SELECT column1, column2, wallet_id, wallet.id as wallet, FROM transactions JOIN wallet w3 ON transactions.wallet_id = wallet.id JOIN (SELECT id, user_id = ${session.user_id} FROM wallet) as w2 ON w2.id == transactions.id
+
+In this case, the best way is to set a values to api options or request parameters. So the rules are:
+
+req.list && session.status.includes('users') && wallet(row.wallet_id).user_id == session.user_id: (read, update, delete) 
+
+or 
+
+options.values && session.status.includes('users') && wallet(row.wallet_id).user_id == session.user_id: (read, update, delete)
+
+
+LOGIC
+
+Query Builder and Value Evaluation

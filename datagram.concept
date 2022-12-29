@@ -18,6 +18,8 @@ In this case, the best way is to set a values to api options or request paramete
 
 req.list && session.status.includes('users') && wallet(row.wallet_id).user_id == session.user_id: (read, update, delete) 
 
+Case 4 with transaction
+
 or 
 
 options.values && session.status.includes('users') && wallet(row.wallet_id).user_id == session.user_id: (read, update, delete)

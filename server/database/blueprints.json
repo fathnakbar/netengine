@@ -2,7 +2,14 @@
     "transaction": {
         "amount": "integer",
         "status": "boolean",
-        "description": "text"
+        "description": "text",
+        "tanggal": "date",
+        "updatedAt": {
+            "type": "date"
+        },
+        "createdAt": {
+            "type": "date"
+        }
     },
 
     "wallet": {
@@ -10,7 +17,15 @@
     },
 
     "user": {
-        "username": "string",
-        "password": "string"
+        "username": {
+            "type": "string(12)",
+            "allowNull": false
+        },
+        "password": {
+            "type": "string",
+            "allowNull": false
+        },
+        "agama": "string",
+        "nomor_telpon": "string"
     }
 }

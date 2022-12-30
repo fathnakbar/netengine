@@ -4,15 +4,17 @@ import { Sequelize } from "sequelize";
 
 describe('Migration tests', () => { 
 
-    beforeAll(() => {
-        write()
+    beforeAll(async () => {
+        return await write(true);
+    });
+
+    it("Compare tables to models", async () => {
+        const database = await read();
+        const result = await compare(database);
+
     })
 
-    it("Compare tables to models", () => {
-        return compare().then(val => console.log(val))
-    })
-
-    it("Initial Migrations", () => {
-        return read().then(val => console.log(val))
+    it.skip("Initial Migrations", async () => {
+        return read().then(val => console.log(JSON.stringify(val)))
     })
  })

@@ -25,7 +25,7 @@
                         {
                             "base": "transactions",
                             "options": "",
-                            "include": ["wallet.on['id'] == row.wallet_id"],
+                            "include": ["wallet.on('id').equals(row.wallet_id)"],
                             "exclude": []
                         },
                         {

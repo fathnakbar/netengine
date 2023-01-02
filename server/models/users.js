@@ -1,8 +1,15 @@
-import { connection } from "../database"
+import { connection } from "../database/index.js"
 
-function getColumns(params) {
-    const query_attr = req.query.attr?.split(','); 
-    const attr = null //[34cca0468b64056e94e81d4cf504192f/columns]
+// const TABLE_NAME = "TABLE_NAME";
+const TABLE_NAME = "users";
+
+
+// const COLUMNS = "${COLUMNS}";
+const COLUMNS = "";
+
+function getColumns({ query }) {
+    const query_attr = query.attr?.split(','); 
+    const attr = null //[${COLUMNS}]
 
     const active_attr = !query_attr ? attr.join(", ") : attr.filter(val => query_attr.includes(val)).join(", ");
 }
@@ -12,7 +19,7 @@ export default {
         return async function(req, res, next){
             try {
                 const data = await connection.query(
-                    `SELECT ${active_attr} FROM \`34cca0468b64056e94e81d4cf504192f/table\``
+                    `SELECT ${active_attr} FROM \`${TABLE_NAME}\``
                 );
 
                 res.status(200).json({data})
@@ -26,13 +33,13 @@ export default {
         return async function (req, res, next) {
 
             const query_attr = req.query.attr?.split(','); 
-            const attr = null //[34cca0468b64056e94e81d4cf504192f/columns]
+            const attr = null //[${COLUMNS}]
 
             const active_attr = !query_attr ? attr.join(", ") : attr.filter(val => query_attr.includes(val)).join(", ");
 
             try {
                 const data = await connection.query(
-                    `SELECT ${active_attr} FROM \`34cca0468b64056e94e81d4cf504192f/table\` WHERE id = ?`,
+                    `SELECT ${active_attr} FROM \`TABLE_NAME\` WHERE id = ?`,
                     {
                         replacements: [
                             req.params('id')
@@ -50,7 +57,7 @@ export default {
         return async function (req, res, next) {
             try {
                 const data = await connection.query(
-                    "UPDATE `34cca0468b64056e94e81d4cf504192f/table` SET 34cca0468b64056e94e81d4cf504192f/columns WHERE id = ?",
+                    `UPDATE \`TABLE_NAME\` SET ${COLUMNS} WHERE id = ?`,
                     {
                         replacements: [
                             req.params("id")
@@ -68,11 +75,9 @@ export default {
         return async function (req, res, next) {
             try {
                 const data = await connection.query(
-                    "UPDATE ? SET ? WHERE ",
+                    `UPDATE \`${TABLE_NAME}\` SET ${COLUMNS} WHERE `,
                     {
                         replacements: [
-                            "34cca0468b64056e94e81d4cf504192f/columns", 
-                            "34cca0468b64056e94e81d4cf504192f/table",
                             req.params("id")
                         ]
                     }

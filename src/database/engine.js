@@ -1,9 +1,8 @@
 import { Sequelize, DataTypes } from "sequelize";
 import { readFile } from "fs/promises";
 import deepEqual from "deep-equal";
-import path, { parse } from "path";
-import { match } from "assert";
-
+import path from "path";
+import models from "./models.json"
 const cur_dir = path.dirname(import.meta.url.replace("file:", ""));
 const db_path = path.join(cur_dir, "./dev.sqlite");
 
@@ -31,16 +30,13 @@ export async function read(){
     return tables;
 }
 
-export async function compare(database=[]){
-    let models = (await readFile(path.join(cur_dir, './blueprints.json'))).toString();
+export function compare(database=[]){
     const defaultProps = {
         "allowNull": true,
         "primaryKey": false,
         "unique": false,
         defaultValue: undefined
     }
-
-    models = JSON.parse(models);
 
     const re = /([A-z]+)(\((.+)\)){0,1}/g;
 
@@ -195,4 +191,9 @@ export async function write(tables){
           username: Sequelize.STRING,
           age: Sequelize.INTEGER,
         })
+}
+
+
+function plant_seeds(params) {
+    
 }

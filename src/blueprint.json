@@ -1,0 +1,78 @@
+{
+    "$appname": "project-name",
+    "$api": [
+        {
+            "base": "/",
+            "view": "",
+            "routes": [
+                {
+                    "base": "admin",
+                    "middleware": ["auth"]
+                },
+                {
+                    "base": "api",
+                    "middleware":["auth"],
+                    "routes": [
+                        {
+                            "base": "users",
+                            "routes": [
+                                {
+                                    "base": "find",
+                                    "controller": {}
+                                }
+                            ]
+                        },
+                        {
+                            "base": "transactions",
+                            "options": "",
+                            "include": ["wallet.on['id'] == row.wallet_id"],
+                            "exclude": []
+                        },
+                        {
+                            "base": "wallet"
+                        }
+                        
+                    ]
+                }
+            ]   
+        }
+    ],
+    "$database": {
+        "provider": "sql",
+        "tables": [
+            {
+                "name": "users",
+                "columns": {
+                    "username": {
+                        "type": "string",
+                        "allowNull": false
+                    },
+                    "password": {
+                        "type": "string",
+                        "allowNull": false
+                    },
+                    "agama": "string",
+                    "nomor_telpon": "string"
+                },
+                "rules": [
+                    ": user_id, username, status (read)",
+                    "session.status.includes('users') && row.user_id.equal(session.user_id): column1, column2, column3 (read, update, delete)"
+                ]
+            },
+            {
+                "name": "transactions",
+                "columns": {},
+                "rules": [
+                    "session.status.includes('users') && row.status.equal('public'): !column1 (read)",
+                    "options.owner && session.status.includes('users') && wallet(row.wallet_id).user_id.equal(session.user_id): (read, update, delete)",
+                    "session.status.includes('users') && wallet(req.wallet_id).user_id.equal(): (create)"
+                ]
+            },
+            {
+                "name": "wallet",
+                "columns": {}
+            }
+        ]
+    },
+    "$git": {}
+}

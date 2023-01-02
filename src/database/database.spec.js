@@ -1,5 +1,5 @@
 import { it, describe, beforeAll } from "vitest";
-import { read, write, compare } from "./migration.js";
+import { read, write, compare } from "./engine.js";
 import { Sequelize } from "sequelize";
 
 describe('Migration tests', () => { 

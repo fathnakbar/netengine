@@ -1,11 +1,11 @@
 import { connection } from "../database/index.js"
 
 // const TABLE_NAME = "TABLE_NAME";
-const TABLE_NAME = "users";
+const TABLE_NAME = "user";
 
 
 // const COLUMNS = "${COLUMNS}";
-const COLUMNS = "";
+const COLUMNS = "username";
 
 function getColumns({ query }) {
     const query_attr = query.attr?.split(','); 
@@ -15,14 +15,15 @@ function getColumns({ query }) {
 }
 
 export default {
-    find(){
+    findAll(){
         return async function(req, res, next){
             try {
-                const data = await connection.query(
-                    `SELECT ${active_attr} FROM \`${TABLE_NAME}\``
+                const [data, metadata] = await connection.query(
+                    `SELECT ${COLUMNS} FROM \`${TABLE_NAME}\``
                 );
 
                 res.status(200).json({data})
+                console.log(data);
                 
             } catch (error) {
                 res.status(500).json({message: error})

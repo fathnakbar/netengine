@@ -14,16 +14,16 @@ const base = "users";
 
 // Create middleware validation
 
-route.get(`/${base}`, resource.find())
+route.get(`/`, resource.findAll())
 
-route.get(`/${base}/:id`, resource.findOne())
+route.get(`/:id`, resource.findOne())
 
-route.post(`/${base}`, resource.insert())
+route.post(`/`, resource.insert())
 
-route.put(`/${base}/:id`, resource.updateOne());
+route.put(`/:id`, resource.updateOne());
 
-route.put(`/${base}`, resource.update());
+route.put(`/`, resource.update());
 
-route.delete(`/${base}/:id`, resource.delete());
+route.delete(`/:id`, resource.delete());
 
 export default route;

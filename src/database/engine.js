@@ -3,6 +3,7 @@ import { readFile } from "fs/promises";
 import deepEqual from "deep-equal";
 import path from "path";
 import models from "./models.json"
+
 const cur_dir = path.dirname(import.meta.url.replace("file:", ""));
 const db_path = path.join(cur_dir, "./dev.sqlite");
 

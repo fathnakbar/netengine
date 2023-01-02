@@ -19,7 +19,7 @@ readdir(routesdir).then(async files => {
 
     await Promise.all(apis);
 
-    route.use("/:name?", (req, res) => req.params.name ? res.send(`API not found ${req.params.name}`) : res.send("API not found"))
+    route.use("/:name?", (req, res) => req.params.name ? res.send(`API \`${req.params.name}\` not found`) : res.send("API not found"))
 })
 
 export default route;

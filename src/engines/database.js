@@ -129,7 +129,7 @@ export function compare(database=[]){
         const name = Object.keys(table)[0];
         if (!models[name]) {
             models[name] = {
-                [operation]: " dropTable"
+                [operation]: "dropTable"
             }
         } else {
             exclude(table[name], ['id', 'updatedAt', 'createdAt']).forEach(([key, values]) => {
@@ -169,16 +169,18 @@ export async function write(tables){
         const table_operation = table_description[operation];
         const description = Object.assign({}, defaultColumns, table_description)
 
-        console.log(description)
-
-        if (table_operation) {
+        
+        if (table_operation && description && typeof queryInterface[table_operation] === "function") {
             queryInterface[table_operation](table_name, description)
             continue;
         }
 
-        for (const [column_name, options] of description) {
-            attr_operation = options[operation];
-            queryInterface[attr_operation](table_name, column_name, options);
+        for (const [column_name, options] of Object.entries(description)) {
+            const attr_operation = options[operation];
+            
+            if (attr_operation) {
+                queryInterface[attr_operation](table_name, column_name, options);
+            }
         }
       }
         

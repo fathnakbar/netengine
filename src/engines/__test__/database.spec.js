@@ -14,14 +14,16 @@ describe('Migration tests', () => {
 
     // })
 
-    it("Read tables from datbase", () => {
-        return read().then(val => console.log(val));
-    })
+    // it("Read tables from datbase", () => {
+    //     return read().then(val => console.log(val));
+    // })
 
     it("Write to database from blueprint", async () => {
         const database = await read();
         const result = await compare(database);
-        // await write(result)
+        await write(result)
+
+        console.log(await read());
     })
 
  })

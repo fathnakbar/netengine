@@ -69,7 +69,7 @@
                 ]
             },
             {
-                "name": "wallet",
+                "name": "wallets",
                 "columns": {}
             }
         ]

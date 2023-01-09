@@ -1,13 +1,9 @@
 import { Sequelize, DataTypes } from "sequelize";
-import { readFile } from "fs/promises";
 import deepEqual from "deep-equal";
 import path from "path";
-import models from "./models.json"
+import blueprint from "../blueprint.json"
 
-const cur_dir = path.dirname(import.meta.url.replace("file:", ""));
-const db_path = path.join(cur_dir, "./dev.sqlite");
-
-console.log(db_path);
+const db_path = path.join("/database/dev.sqlite");
 
 const operation = Symbol("operation");
 
@@ -17,7 +13,7 @@ const queryInterface = sequelize.getQueryInterface();
 // This reads the db file 
 export async function read(){
 
-
+    console.log(db_path)
     const table_list = await queryInterface.showAllTables();
     const describes = table_list.map(async (table) => {
         return {
@@ -75,26 +71,26 @@ export function compare(database=[]){
 
         return type().toSql()
     }
+
+    let models = {};
     
 
-    for (const table in models) {
-        if (Object.hasOwnProperty.call(models, table)) {
-            const description = models[table];
-            for (const [attribute, opt] of Object.entries(description)) {
-                if (typeof opt === "string") {
-                    let type = parseType(opt);
-                    description[attribute] = {...defaultProps, type};
-                }
-                
-                if (typeof opt === "object") {
-                    let type = parseType(opt);
-                    description[attribute] = {...defaultProps,...opt, type};
-                }
+    blueprint.$database.tables.forEach(table => {
+        const description = table.columns;
+        for (const [attribute, opt] of Object.entries(description)) {
+            if (typeof opt === "string") {
+                let type = parseType(opt);
+                description[attribute] = {...defaultProps, type};
             }
-
-            models[table] = description;
+            
+            if (typeof opt === "object") {
+                let type = parseType(opt);
+                description[attribute] = {...defaultProps,...opt, type};
+            }
         }
-    }
+
+        models[table.name] = description;
+    });
 
     const find = (ob, key) => {
         return Array.from(ob).filter(val => Object.keys(val).includes(key))[0]
@@ -146,8 +142,6 @@ export function compare(database=[]){
         }
     })
 
-    console.log(models)
-
     return models;
 }
 
@@ -156,7 +150,7 @@ export async function write(tables){
         return
     }
 
-    const _ =   {
+    const defaultColumns =   {
         id: {
           type: Sequelize.INTEGER,
           primaryKey: true,
@@ -170,28 +164,24 @@ export async function write(tables){
         }
       }
 
-      for (const [name, attributes] of Object.entries(tables)) {
+      for (const [table_name, table_description] of Object.entries(tables)) {
+          
+        const table_operation = table_description[operation];
+        const description = Object.assign({}, defaultColumns, table_description)
+
+        console.log(description)
+
+        if (table_operation) {
+            queryInterface[table_operation](table_name, description)
+            continue;
+        }
+
+        for (const [column_name, options] of description) {
+            attr_operation = options[operation];
+            queryInterface[attr_operation](table_name, column_name, options);
+        }
       }
-
-      console.log("Write table")
-
-      return queryInterface.createTable(
-        'user',
-        {
-          id: {
-            type: Sequelize.INTEGER,
-            primaryKey: true,
-            autoIncrement: true
-          },
-          createdAt: {
-            type: Sequelize.DATE
-          },
-          updatedAt: {
-            type: Sequelize.DATE
-          },
-          username: Sequelize.STRING,
-          age: Sequelize.INTEGER,
-        })
+        
 }
 
 

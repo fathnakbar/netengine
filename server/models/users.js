@@ -1,4 +1,4 @@
-import { connection } from "../database/index.js"
+import { connection } from "./db.js"
 
 // const TABLE_NAME = "TABLE_NAME";
 const TABLE_NAME = "user";
